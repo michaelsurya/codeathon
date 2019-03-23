@@ -9,7 +9,8 @@ const player_map = players.map(player => {
 		id: player,
 		sprite: null, //Will hold the sprite when it's created
 		speed: 2, // This is the parameter for how fast it should move
-		shot: false,
+		alive: true,
+		facing: 'N',
 		update: function() {
 			if (player === 1) {
 				this.sprite.animations.add('down', [0, 1, 2, 3], 6)
@@ -39,19 +40,23 @@ const player_map = players.map(player => {
 			const theDirection = playersMove.find(e => e.playerId === this.id).direction
 
 			if (theDirection === 'N') {
+				this.facing = 'N'
 				this.sprite.body.y += -this.speed
 				this.sprite.animations.play('up')
 			}
 			if (theDirection === 'S') {
+				this.facing = 'S'
 				this.sprite.body.y += this.speed
 				this.sprite.animations.play('down')
 			}
-			if (theDirection === 'W') {
-				this.sprite.body.x += -this.speed
+			if (theDirection === 'E') {
+				this.facing = 'E'
+				this.sprite.body.x += this.speed
 				this.sprite.animations.play('side')
 			}
-			if (theDirection === 'E') {
-				this.sprite.body.x += this.speed
+			if (theDirection === 'W') {
+				this.facing = 'W'
+				this.sprite.body.x += -this.speed
 				this.sprite.animations.play('side')
 			}
 
