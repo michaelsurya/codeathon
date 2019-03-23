@@ -39,22 +39,22 @@ const player_map = players.map(player => {
 
 			const theDirection = playersMove.find(e => e.playerId === this.id).direction
 
-			if (theDirection === 'N') {
+			if (theDirection === 'N' || theDirection[0] === 'N') {
 				this.facing = 'N'
 				this.sprite.body.y += -this.speed
 				this.sprite.animations.play('up')
 			}
-			if (theDirection === 'S') {
+			if (theDirection === 'S' || theDirection[0] === 'S') {
 				this.facing = 'S'
 				this.sprite.body.y += this.speed
 				this.sprite.animations.play('down')
 			}
-			if (theDirection === 'E') {
+			if (theDirection === 'E' || (theDirection.length>1)? theDirection[1] === 'E' : false) {
 				this.facing = 'E'
 				this.sprite.body.x += this.speed
 				this.sprite.animations.play('side')
 			}
-			if (theDirection === 'W') {
+			if (theDirection === 'W' || (theDirection.length>1)? theDirection[1] === 'W' : false) {
 				this.facing = 'W'
 				this.sprite.body.x += -this.speed
 				this.sprite.animations.play('side')
