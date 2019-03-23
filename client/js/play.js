@@ -85,22 +85,38 @@ var playState = {
 						this.facing = 'N'
 						this.sprite.body.y += -this.speed
 						this.sprite.animations.play('up')
-					}
-					if (theDirection === 'S') {
+					} else if (theDirection === 'S') {
 						this.facing = 'S'
 						this.sprite.body.y += this.speed
 						this.sprite.animations.play('down')
-					}
-					if (theDirection === 'E') {
+					} else if (theDirection === 'E') {
 						this.facing = 'E'
 						this.sprite.body.x += this.speed
 						this.sprite.animations.play('side')
-					}
-					if (theDirection === 'W') {
+					} else if (theDirection === 'W') {
 						this.facing = 'W'
 						this.sprite.body.x += -this.speed
 						this.sprite.animations.play('side')
-					}else{
+					} else if (theDirection === 'NE') {
+						this.facing = 'N'
+						this.sprite.body.y += -this.speed
+						this.sprite.body.x += this.speed
+					} else if (theDirection === 'NW') {
+						this.facing = 'N'
+						this.sprite.body.y += -this.speed
+						this.sprite.body.x += -this.speed
+						this.sprite.animations.play('side')
+					} else if (theDirection === 'SE') {
+						this.facing = 'S'
+						this.sprite.body.y += this.speed
+						this.sprite.body.x += this.speed
+						this.sprite.animations.play('side')
+					} else if (theDirection === 'SW') {
+						this.facing = 'S'
+						this.sprite.body.y += this.speed
+						this.sprite.body.x += -this.speed
+						this.sprite.animations.play('side')
+					} else {
 						this.sprite.animations.play('down')
 					}
 
