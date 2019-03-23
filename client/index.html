@@ -3,7 +3,7 @@
         <meta charset="UTF-8" />
         <title>Multiplayer Experiment</title>
         <!-- Load the Phaser game library -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.4.2/phaser.min.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/phaser-ce@2.8.5/build/phaser.js"></script>
         <!-- Load the Socket.io networking library -->
         <!-- <script src="/socket.io/socket.io.js"></script> -->
 
@@ -27,6 +27,7 @@
             var game = new Phaser.Game(WINDOW_WIDTH, WINDOW_HEIGHT, Phaser.AUTO, '', 
             {preload:preload, create:create, update:GameLoop} );
 
+            var map;
             var layer;
             var bullet_array = [];
           
@@ -34,9 +35,8 @@
             var other_players = {};
             
             var player = {
-                sprite:null,//Will hold the sprite when it's created 
+                sprite: null,//Will hold the sprite when it's created 
                 speed:2, // This is the parameter for how fast it should move 
-                friction:0.95,
                 shot:false,
                 update: function(){
                     this.sprite.frame = 0;
@@ -47,25 +47,34 @@
 
                     // Move forward
                     if(game.input.keyboard.isDown(Phaser.Keyboard.W) || game.input.keyboard.isDown(Phaser.Keyboard.UP)){
-                        this.sprite.y -= this.speed; 
+                        this.sprite.body.y += -this.speed; 
                         this.sprite.animations.play('up');
                     }
                     if(game.input.keyboard.isDown(Phaser.Keyboard.S) || game.input.keyboard.isDown(Phaser.Keyboard.DOWN)){
-                        this.sprite.y += this.speed;
+                        this.sprite.body.y += this.speed;
                         this.sprite.animations.play('down');
                     }
                     if(game.input.keyboard.isDown(Phaser.Keyboard.A) || game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
-                        this.sprite.x -= this.speed;
+                        this.sprite.body.x += -this.speed;
                         this.sprite.animations.play('left');
                     }
                     if(game.input.keyboard.isDown(Phaser.Keyboard.D) || game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
-                        this.sprite.x += this.speed;
+                        this.sprite.body.x += this.speed;
                         this.sprite.animations.play('right');
                     }
                   
                     // Tell the server we've moved 
                     // socket.emit('move-player',{x:this.sprite.x,y:this.sprite.y});
-  
+                },
+
+                onCollide: function(){
+                    game.add.tween(this.sprite).to({alpha:1}, 1000, Phaser.Easing.Linear.None, true);
+                    setTimeout(
+                    () => {
+                        game.add.tween(this.sprite).to({alpha:0}, 1000, Phaser.Easing.Linear.None, true);
+                    },
+                    1000
+                    ); 
                 }
             }
 
@@ -74,7 +83,7 @@
                 //Load maps and sprites
                 game.load.spritesheet('characters', 'assets/sprites/golem.png', 32, 32);
                 game.load.image('fireball', 'assets/sprites/fireball.png');
-                game.load.tilemap('level', 'assets/maps/map.json', null, Phaser.Tilemap.TILED_JSON);
+                game.load.tilemap('map', 'assets/maps/map.json', null, Phaser.Tilemap.TILED_JSON);
                 game.load.image('tiles', 'assets/sprites/dungeon.png');
 
             	//Load audio assets
@@ -82,24 +91,27 @@
             }
 
             function create(){
-                //Load tileset to the game
-                var map = game.add.tilemap('level');
-                map.addTilesetImage('dungeon', 'tiles');
-
                 game.world.setBounds(0, 0, 640, 640);
+
+                //Load tileset to the game
+                map = game.add.tilemap('map');
+                map.addTilesetImage('dungeon', 'tiles');
+               
                 map.setCollision([1,2,3,4,5,6,11,16,21,26,31,36,41,41,42,43,44,45,46,51,52,53,54,55,56,67,68,79]);
                 layer = map.createLayer('Tile Layer 1');
-                game.physics.enable(layer, Phaser.Physics.ARCADE);
+                layer.resizeWorld();
 
                 //Create player
                 player.sprite = game.add.sprite(32, 32, 'characters');
-                game.physics.enable(player, Phaser.Physics.ARCADE);
+                game.add.existing(player.sprite);
+                game.physics.enable(player.sprite, Phaser.Physics.ARCADE);
+                game.add.tween(player.sprite).to({alpha:0}, 200, Phaser.Easing.Linear.None, true);
             }
 
             function GameLoop(){
                 player.update();
-                game.physics.arcade.collide(player, layer, function() {
-                    //ON COLLIDE
+                game.physics.arcade.collide(player.sprite, layer, function() {
+                    player.onCollide();
                 });
             }
 
