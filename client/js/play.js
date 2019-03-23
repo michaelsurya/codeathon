@@ -53,7 +53,7 @@ var playState = {
 				alive: true,
 				facing: 'N',
 				update: function() {
-					this.sprite.animation.add('attack', 44, 6)
+					this.sprite.animations.add('attack', 44, 6)
 					if (player === 1) {
 						this.sprite.animations.add('down', [0, 1, 2, 3], 6)
 						this.sprite.animations.add('up', [4, 5, 6, 7], 6)
@@ -81,25 +81,27 @@ var playState = {
 
 					const theDirection = playersMove.find(e => e.playerId === this.id).direction
 
-					if (theDirection === 'N' || theDirection[0] === 'N') {
+					if (theDirection === 'N') {
 						this.facing = 'N'
 						this.sprite.body.y += -this.speed
 						this.sprite.animations.play('up')
 					}
-					if (theDirection === 'S' || theDirection[0] === 'S') {
+					if (theDirection === 'S') {
 						this.facing = 'S'
 						this.sprite.body.y += this.speed
 						this.sprite.animations.play('down')
 					}
-					if (theDirection === 'E' || theDirection.length > 1 ? theDirection[1] === 'E' : false) {
+					if (theDirection === 'E') {
 						this.facing = 'E'
 						this.sprite.body.x += this.speed
 						this.sprite.animations.play('side')
 					}
-					if (theDirection === 'W' || theDirection.length > 1 ? theDirection[1] === 'W' : false) {
+					if (theDirection === 'W') {
 						this.facing = 'W'
 						this.sprite.body.x += -this.speed
 						this.sprite.animations.play('side')
+					}else{
+						this.sprite.animations.play('down')
 					}
 
 					if (false) {
@@ -160,10 +162,10 @@ var playState = {
 
 				onCollide: function() {
 					this.sprite.sfx.collide.play()
-					game.add.tween(this.sprite).to({ alpha: 1 }, 1000, Phaser.Easing.Linear.None, true)
-					setTimeout(() => {
-						game.add.tween(this.sprite).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true)
-					}, 1000)
+					// game.add.tween(this.sprite).to({ alpha: 1 }, 1000, Phaser.Easing.Linear.None, true)
+					// setTimeout(() => {
+					// 	game.add.tween(this.sprite).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true)
+					// }, 1000)
 				},
 
 				collideSound: function() {
