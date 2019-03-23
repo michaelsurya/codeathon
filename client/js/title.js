@@ -2,9 +2,9 @@ var socket;
 
 // If claimed
 let connected = false;
-let players = []
-let playersMove = [{ playerId: 1, direction: "O" }, { playerId: 2, direction: "O" }, { playerId: 3, direction: "O" }, { playerId: 4, direction: "O" }]
-let playersAttacking = [{ playerId: 1, attacking: false }, { playerId: 2, attacking: false }, { playerId: 3, attacking: false }, { playerId: 4, attacking: false }]
+var players = []
+var playersMove = [{ playerId: 1, direction: "O" }, { playerId: 2, direction: "O" }, { playerId: 3, direction: "O" }, { playerId: 4, direction: "O" }]
+var playersAttacking = [{ playerId: 1, attacking: false }, { playerId: 2, attacking: false }, { playerId: 3, attacking: false }, { playerId: 4, attacking: false }]
 
 let gameStarted = false;
 
@@ -48,13 +48,14 @@ var titleState = {
 
 		// On Direction
 		socket.on("direction", (data) => {
-			const theIndex = playersMove.findIndex(e.playerId === data.playerId)
+			const theIndex = playersMove.findIndex(e => e.playerId === data.playerId)
+			console.log(data)
 			playersMove[theIndex] = { playerId: data.playerId, direction: data.direction}
 		})
 
 		// On Attack
 		socket.on("attack", (data) => {
-			const theIndex = playersAttacking.findIndex(e.playerId === data.playerId)
+			const theIndex = playersAttacking.findIndex(e => e.playerId === data.playerId)
 			playersAttacking[theIndex] = { playerId: data.playerId, attacking: true }
 		})
 
