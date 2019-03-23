@@ -14,6 +14,8 @@ var player = {
       this.sprite.animations.add('up', [3,4,5], 6);
       this.sprite.animations.add('right', [6,7,8], 6);
       this.sprite.animations.add('left', [9,10,11], 6);
+      this.sprite.sfx = {};
+      this.sprite.sfx.collide = game.add.audio('hit');
 
       // Move forward
       if(game.input.keyboard.isDown(Phaser.Keyboard.W) || game.input.keyboard.isDown(Phaser.Keyboard.UP)){
@@ -38,6 +40,7 @@ var player = {
   },
 
   onCollide: function(){
+    this.sprite.sfx.collide.play();
       game.add.tween(this.sprite).to({alpha:1}, 1000, Phaser.Easing.Linear.None, true);
       setTimeout(
       () => {
@@ -62,7 +65,13 @@ var playState = {
     player.sprite = game.add.sprite(32, 32, 'characters');
     game.add.existing(player.sprite);
     game.physics.enable(player.sprite, Phaser.Physics.ARCADE);
-    game.add.tween(player.sprite).to({alpha:0}, 200, Phaser.Easing.Linear.None, true);
+    //game.add.tween(player.sprite).to({alpha:0}, 200, Phaser.Easing.Linear.None, true);
+
+    //2nd player
+    player.sprite = game.add.sprite(50, 32, 'characters');
+    game.add.existing(player.sprite);
+    game.physics.enable(player.sprite, Phaser.Physics.ARCADE);
+    //game.add.tween(player.sprite).to({alpha:0}, 200, Phaser.Easing.Linear.None, true);
 
     // socket = io("http://vija02.localhost.run"); // This triggers the 'connection' event on the server
   },
