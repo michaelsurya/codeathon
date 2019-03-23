@@ -43,7 +43,7 @@ var titleState = {
 	update: function(){
 		playerLabel.setText(`Player count: ${players.length}`);
 
-		if (game.input.activePointer.isDown && connected && players.length > 1) {
+		if (game.input.activePointer.isDown) {
 			game.state.start('play')
 		}
 	}

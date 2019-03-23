@@ -9,7 +9,7 @@ var loadState={
 		game.stage.backgroundColor = '#000000';
 
 		//Load maps and sprites
-		game.load.spritesheet('characters', 'assets/sprites/golem.png', 32, 32);
+		game.load.spritesheet('characters', 'assets/sprites/character.png', 32, 32);
 		game.load.image('fireball', 'assets/sprites/fireball.png');
 		game.load.tilemap('map', 'assets/maps/map.json', null, Phaser.Tilemap.TILED_JSON);
 		game.load.image('tiles', 'assets/sprites/dungeon.png');
