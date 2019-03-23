@@ -12,6 +12,7 @@ const player_map = players.map(player => {
 		alive: true,
 		facing: 'N',
 		update: function() {
+			this.sprite.animation.add('attack', 44, 6)
 			if (player === 1) {
 				this.sprite.animations.add('down', [0, 1, 2, 3], 6)
 				this.sprite.animations.add('up', [4, 5, 6, 7], 6)
@@ -59,6 +60,58 @@ const player_map = players.map(player => {
 				this.sprite.body.x += -this.speed
 				this.sprite.animations.play('side')
 			}
+
+			if(){
+				this.sprite.animation.play('attack');
+				if(this.sprite.facing === 'N'){
+					for(var i=0; i<10; i++){
+						var x = this.sprite.body.x
+						var y = this.sprite.body.y - i
+
+						player_map.forEach((player) => {
+							if(player.sprite.body.x === x && player.sprite.body.y === y){
+								player.sprite.destroy();
+							}
+						})
+					}
+				}
+				if(this.sprite.facing === 'S'){
+					for(var i=0; i<10; i++){
+						var x = this.sprite.body.x
+						var y = this.sprite.body.y + i
+
+						player_map.forEach((player) => {
+							if(player.sprite.body.x === x && player.sprite.body.y === y){
+								player.sprite.destroy();
+							}
+						})
+					}
+				}
+				if(this.sprite.facing === 'W'){
+					for(var i=0; i<10; i++){
+						var x = this.sprite.body.x - i
+						var y = this.sprite.body.y
+
+						player_map.forEach((player) => {
+							if(player.sprite.body.x === x && player.sprite.body.y === y){
+								player.sprite.destroy();
+							}
+						})
+					}
+		
+				}
+				if(this.sprite.facing === 'E'){
+					for(var i=0; i<10; i++){
+						var x = this.sprite.body.x + i
+						var y = this.sprite.body.y
+
+						player_map.forEach((player) => {
+							if(player.sprite.body.x === x && player.sprite.body.y === y){
+								player.sprite.destroy();
+							}
+						})
+					}
+				}
 
 			// Tell the server we've moved
 			// socket.emit('move-player',{x:this.sprite.x,y:this.sprite.y});
